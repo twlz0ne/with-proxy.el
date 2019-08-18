@@ -7,7 +7,7 @@
 ;; Version: 0.1.0
 ;; Package-Requires: ((emacs "24.4"))
 ;; URL: https://github.com/twlz0ne/with-proxy.el
-;; Keywords: networking
+;; Keywords: comm
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -29,13 +29,13 @@
 ;; ,---
 ;; | (with-proxy
 ;; |   ...)
-;; | 
+;; |
 ;; | ;; equals to:
 ;; | (with-proxy
 ;; |   :http-server "127.0.0.1:1081"
 ;; |   :no-proxy '("localhost" "127.0.0.1" "192.168.*" "10.*")
 ;; |   ...)
-;; | 
+;; |
 ;; | ;; equals to:
 ;; | (with-url-proxy
 ;; |   :http-server "127.0.0.1:1081"
@@ -62,6 +62,7 @@
                               "10.*"))
 
 (defun with-proxy--cl-args-body (args)
+  "Remove key-value paire from ARGS."
   (let ((it args))
     (catch 'break
       (while t
