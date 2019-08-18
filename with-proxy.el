@@ -53,6 +53,8 @@
 
 ;;; Code:
 
+(require 'cl-lib)
+
 (defvar with-proxy-http-server "127.0.0.1:1081")
 (defvar with-proxy-no-proxy '("localhost"
                               "127.0.0.1"
