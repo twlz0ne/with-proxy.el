@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/twlz0ne/with-proxy.el.svg?branch=master)](https://travis-ci.com/twlz0ne/with-proxy.el)
+
 # with-proxy.el
 
 Evaluate expressions with proxy.
