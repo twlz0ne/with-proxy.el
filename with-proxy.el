@@ -73,8 +73,7 @@
         (no-proxy1 (or no-proxy with-proxy-no-proxy))
         (body1 (with-proxy--cl-args-body body)))
     `(with-temp-buffer
-       (let ((proxy-services-backup (bound-and-true-p url-proxy-services))
-             (url-proxy-services
+       (let ((url-proxy-services
               '(("http" . ,http-server1)
                 ("https" . ,http-server1)
                 ("ftp" . ,http-server1)
