@@ -5,7 +5,7 @@
 ;; Author: Gong Qijian <gongqijian@gmail.com>
 ;; Created: 2019/02/25
 ;; Version: 0.1.0
-;; Package-Requires: ((emacs "24.4") (dash "2.0"))
+;; Package-Requires: ((emacs "24.4"))
 ;; URL: https://github.com/twlz0ne/with-proxy.el
 ;; Keywords: networking
 
@@ -53,8 +53,6 @@
 
 ;;; Code:
 
-(require 'dash)
-
 (defvar with-proxy-http-server "127.0.0.1:1081")
 (defvar with-proxy-no-proxy '("localhost"
                               "127.0.0.1"
@@ -62,11 +60,12 @@
                               "10.*"))
 
 (defun with-proxy--cl-args-body (args)
-  (-fix (lambda (it)
-          (if (keywordp (car it))
-              (cddr it)
-            it))
-        args))
+  (let ((it args))
+    (catch 'break
+      (while t
+        (if (keywordp (car it))
+            (setq it (cddr it))
+          (throw 'break it))))))
 
 (cl-defmacro with-url-proxy (&rest body &key http-server no-proxy &allow-other-keys)
   (declare (indent 0) (debug t))
