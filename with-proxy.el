@@ -37,10 +37,10 @@
 ;; |   ...)
 ;; |
 ;; | ;; equals to:
-;; | (with-url-proxy
+;; | (with-proxy-url
 ;; |   :http-server "127.0.0.1:1081"
 ;; |   :no-proxy '("localhost" "127.0.0.1" "192.168.*" "10.*")
-;; |   (with-shell-proxy
+;; |   (with-proxy-shell
 ;; |     :http-server "127.0.0.1:1081"
 ;; |     ...))
 ;; `---
@@ -62,7 +62,7 @@
                               "10.*"))
 
 (defun with-proxy--cl-args-body (args)
-  "Remove key-value paire from ARGS."
+  "Remove key-value pair from ARGS."
   (let ((it args))
     (catch 'break
       (while t
@@ -70,7 +70,10 @@
             (setq it (cddr it))
           (throw 'break it))))))
 
-(cl-defmacro with-url-proxy (&rest body &key http-server no-proxy &allow-other-keys)
+(cl-defmacro with-proxy-url (&rest body &key http-server no-proxy &allow-other-keys)
+  "Execute BODY with only url proxy.
+If HTTP-SERVER is nil, use `with-proxy-http-server' as default.
+If NO-PROXY is nil, use `with-proxy-no-proxy' as default."
   (declare (indent 0) (debug t))
   (let ((http-server1 (or http-server with-proxy-http-server))
         (no-proxy1 (or no-proxy with-proxy-no-proxy))
@@ -80,10 +83,12 @@
               '(("http" . ,http-server1)
                 ("https" . ,http-server1)
                 ("ftp" . ,http-server1)
-                ("no_proxy" . ,(concat "^\\(" (mapconcat 'identity no-proxy1 "\\|") "\\)")))))
+                ("no_proxy" . ,(concat "^\\(" (mapconcat #'identity no-proxy1 "\\|") "\\)")))))
          ,@body1))))
 
-(cl-defmacro with-shell-proxy (&rest body &key http-server &allow-other-keys)
+(cl-defmacro with-proxy-shell (&rest body &key http-server &allow-other-keys)
+  "Execute BODY with only shell proxy.
+If HTTP-SERVER is nil, use `with-proxy-http-server' as default."
   (declare (indent 0) (debug t))
   (let ((http-server1 (or http-server with-proxy-http-server))
         (body1 (with-proxy--cl-args-body body)))
@@ -94,9 +99,12 @@
          ,@body1))))
 
 (cl-defmacro with-proxy (&rest body &key http-server no-proxy &allow-other-keys)
+  "Execute BODY with both url and shell proxy.
+If HTTP-SERVER is nil, use `with-proxy-http-server' as default.
+If NO-PROXY is nil, use `with-proxy-no-proxy' as default."
   (declare (indent defun) (debug t))
-  `(with-url-proxy :http-server ,http-server :no-proxy ,no-proxy
-                   (with-shell-proxy :http-server ,http-server
+  `(with-proxy-url :http-server ,http-server :no-proxy ,no-proxy
+                   (with-proxy-shell :http-server ,http-server
                                      ,@body)))
 
 (provide 'with-proxy)
