@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.com/twlz0ne/with-proxy.el.svg?branch=master)](https://travis-ci.com/twlz0ne/with-proxy.el)
+[![MELPA](https://melpa.org/packages/with-proxy-badge.svg)](https://melpa.org/#/with-proxy)
 
 # with-proxy.el
 
@@ -6,10 +7,9 @@ Evaluate expressions with proxy.
 
 ## Installation
 
-Clone this repository to directory `~/.emacs.d/site-lisp/with-proxy`, for example, and add this to your .emacs
+Clone this repository, or install from MELPA. Add the following to your `.emacs`:
 
 ```elisp
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/site-lisp/with-proxy"))
 (require 'with-proxy)
 ```
 
