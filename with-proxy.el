@@ -94,8 +94,8 @@ If HTTP-SERVER is nil, use `with-proxy-http-server' as default."
         (body1 (with-proxy--cl-args-body body)))
     `(with-temp-buffer
        (let ((process-environment (cl-copy-list process-environment)))
-         (setenv "HTTP_PROXY" ,http-server1)
-         (setenv "HTTPS_PROXY" ,http-server1)
+         (setenv "http_proxy" ,http-server1)
+         (setenv "https_proxy" ,http-server1)
          ,@body1))))
 
 (cl-defmacro with-proxy (&rest body &key http-server no-proxy &allow-other-keys)
